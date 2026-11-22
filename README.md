@@ -4,6 +4,7 @@
 
 **Fail-Closed Firefox (Manifest V3) Spoiler Protection Extension for Grand Theft Auto VI**
 
+[![Firefox Add-ons](https://img.shields.io/badge/Firefox%20Add--ons-GTA%20Shield-ff7139?style=flat-square&logo=firefox-browser)](https://addons.mozilla.org/en-US/firefox/addon/gta-shield-spoiler-blocker/)
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-orange?style=flat-square&logo=firefox)](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Build_a_cross_browser_extension)
 [![Version](https://img.shields.io/badge/Version-v1.2.0%20Vice%20Edition-ff2a85?style=flat-square)](CHANGELOG.md)
 [![Firefox](https://img.shields.io/badge/Firefox-109%2B-blue?style=flat-square&logo=firefox-browser)](https://www.mozilla.org/firefox/)
@@ -31,8 +32,9 @@
 7. [PC News Mode Bypass](#-pc-news-mode-bypass)
 8. [Anti-Flicker & Hydration Guards](#-anti-flicker--hydration-guards)
 9. [Installation & Setup](#-installation--setup)
-   - [Temporary Load (`about:debugging`)](#1-temporary-installation-in-firefox)
-   - [Permanent Unlisted Signing (`web-ext`)](#2-permanent-unlisted-installation)
+   - [Official Firefox Add-ons Listing (AMO)](#1-official-firefox-add-ons-listing-amo)
+   - [Temporary Load (`about:debugging`)](#2-temporary-installation-in-firefox)
+   - [Permanent Unlisted Signing (`web-ext`)](#3-permanent-unlisted-installation)
 10. [Testing & Verification](#-testing--verification)
 11. [Project Structure](#-project-structure)
 12. [Configuration & Control Center](#-configuration--control-center)
@@ -182,7 +184,14 @@ Modern single-page applications (SPAs) like YouTube create DOM elements before t
 
 ## 📦 Installation & Setup
 
-### 1. Temporary Installation in Firefox
+### 1. Official Firefox Add-ons Listing (AMO)
+
+> 🦊 **Hosted URL:** [GTA Shield - Spoiler Blocker on Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/gta-shield-spoiler-blocker/)  
+> *(Status: Under review by Mozilla editors; will be live and installable with 1-click once approved)*
+
+When published, click the link above and choose **"Add to Firefox"**.
+
+### 2. Temporary Installation in Firefox
 
 1. Open Firefox and navigate to:
    ```
@@ -192,7 +201,7 @@ Modern single-page applications (SPAs) like YouTube create DOM elements before t
 3. Navigate to this directory and select [manifest.json](file:///D:/Alien/Programming/browser_extensions/project_jason/manifest.json).
 4. The **GTA Shield** icon will appear on your toolbar.
 
-### 2. Permanent Unlisted Installation
+### 3. Permanent Unlisted Installation
 
 To keep the add-on permanently installed without reloading on every browser restart:
 

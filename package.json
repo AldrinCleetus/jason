@@ -1,6 +1,7 @@
 {
   "name": "gta-shield",
   "version": "1.2.0",
+  "homepage": "https://addons.mozilla.org/en-US/firefox/addon/gta-shield-spoiler-blocker/",
   "description": "Fail-closed spoiler protection blocking GTA 6 content across YouTube, Reddit, Instagram, and the web until PC launch.",
   "main": "src/engine.js",
   "scripts": {
