@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Formal Versioning:** Added `CHANGELOG.md`, bumped version to `1.2.0` in `manifest.json` and `package.json`, and surfaced version badges in extension UI.
 
 ### Fixed
+- **AMO Manifest Compliance:** Added `data_collection_permissions: { required: ["none"] }` under `browser_specific_settings.gecko` and updated `strict_min_version` to `"140.0"` in accordance with Firefox's built-in data collection consent requirements.
+- **AMO ZIP Path Separators:** Built a standalone Node.js packaging generator (`scripts/package_extension.js`) ensuring all archive entries strictly use forward slashes (`/`), resolving the Windows `icons\icon-128.png` backslash rejection.
 - **Mermaid Diagram Parse Error:** Fixed GitHub rich display parse error in `README.md` by properly formatting node identifiers and removing unquoted parentheses/HTML linebreaks in edge transitions.
 
 ---
