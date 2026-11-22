@@ -40,32 +40,44 @@ article:not([data-gta-shield-scanned])[data-gta-shield-prehide],
   pointer-events: none !important;
 }
 
-/* 4. GTA Shield Placeholder Container */
+/* 4. GTA Shield Placeholder Container - Vice City Edition */
 .gta-shield-placeholder {
   display: flex !important;
   align-items: center !important;
-  gap: 14px !important;
+  gap: 16px !important;
   padding: 16px 20px !important;
-  margin: 6px 0 !important;
-  border-radius: 10px !important;
-  background: linear-gradient(135deg, #0e1117 0%, #171b26 100%) !important;
-  border: 1px solid #e63946 !important;
-  box-shadow: 0 4px 14px rgba(230, 57, 70, 0.15) !important;
-  color: #f1faee !important;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  margin: 8px 0 !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #0e0717 0%, #1a0b2e 50%, #290d40 100%) !important;
+  border: 1px solid #ff2a85 !important;
+  box-shadow: 0 4px 20px rgba(255, 42, 133, 0.25), inset 0 0 15px rgba(114, 9, 183, 0.2) !important;
+  color: #fce7f3 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif !important;
   font-size: 14px !important;
   line-height: 1.4 !important;
   box-sizing: border-box !important;
   width: 100% !important;
   z-index: 100 !important;
   user-select: none !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.gta-shield-placeholder::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 2px !important;
+  background: linear-gradient(90deg, #ff2a85 0%, #ff7b00 50%, #00f5d4 100%) !important;
 }
 
 .gta-shield-placeholder-icon {
-  font-size: 26px !important;
+  font-size: 28px !important;
   line-height: 1 !important;
   flex-shrink: 0 !important;
-  filter: drop-shadow(0 0 6px rgba(230, 57, 70, 0.6)) !important;
+  filter: drop-shadow(0 0 8px rgba(255, 42, 133, 0.8)) !important;
 }
 
 .gta-shield-placeholder-body {
@@ -76,61 +88,82 @@ article:not([data-gta-shield-scanned])[data-gta-shield-prehide],
 }
 
 .gta-shield-placeholder-title {
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   font-size: 15px !important;
-  color: #ff4d6d !important;
-  letter-spacing: 0.3px !important;
+  color: #ff2a85 !important;
+  letter-spacing: 0.6px !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 0 8px rgba(255, 42, 133, 0.5) !important;
 }
 
 .gta-shield-placeholder-sub {
   font-size: 12px !important;
-  color: #a8dadc !important;
+  color: #ffb3d9 !important;
+  opacity: 0.9 !important;
 }
 
 .gta-shield-placeholder-debug {
   font-size: 11px !important;
-  font-family: monospace !important;
-  color: #8d99ae !important;
+  font-family: "SF Mono", Consolas, monospace !important;
+  color: #00f5d4 !important;
   margin-top: 4px !important;
   word-break: break-all !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
 }
 
 /* Light level only: Click to reveal button */
 .gta-shield-reveal-btn {
-  background: rgba(255, 77, 109, 0.15) !important;
-  color: #ff758f !important;
-  border: 1px solid #ff4d6d !important;
+  background: rgba(255, 42, 133, 0.15) !important;
+  color: #ff70a6 !important;
+  border: 1px solid #ff2a85 !important;
   border-radius: 6px !important;
   padding: 6px 14px !important;
   font-size: 12px !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   cursor: pointer !important;
   transition: all 0.2s ease !important;
   align-self: flex-start !important;
   margin-top: 6px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
 }
 
 .gta-shield-reveal-btn:hover {
-  background: #ff4d6d !important;
+  background: #ff2a85 !important;
   color: #ffffff !important;
+  box-shadow: 0 0 12px rgba(255, 42, 133, 0.6) !important;
 }
 
-/* 5. PC News Bypass Placeholder */
+/* 5. PC News Bypass Placeholder - Vice City Dispatch */
 .gta-shield-pc-news {
   display: flex !important;
   flex-direction: column !important;
   gap: 8px !important;
   padding: 14px 18px !important;
-  margin: 6px 0 !important;
-  border-radius: 10px !important;
-  background: linear-gradient(135deg, #091a24 0%, #0d2838 100%) !important;
-  border: 1px solid #00b4d8 !important;
-  box-shadow: 0 4px 14px rgba(0, 180, 216, 0.15) !important;
+  margin: 8px 0 !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #05141c 0%, #082937 50%, #0d384c 100%) !important;
+  border: 1px solid #00f5d4 !important;
+  box-shadow: 0 4px 18px rgba(0, 245, 212, 0.2) !important;
   color: #f1faee !important;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
   font-size: 14px !important;
   box-sizing: border-box !important;
   width: 100% !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.gta-shield-pc-news::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 2px !important;
+  background: linear-gradient(90deg, #00f5d4 0%, #4cc9f0 100%) !important;
 }
 
 .gta-shield-pc-news-badge {
@@ -138,19 +171,21 @@ article:not([data-gta-shield-scanned])[data-gta-shield-prehide],
   align-items: center !important;
   gap: 6px !important;
   font-size: 11px !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.8px !important;
-  color: #90e0ef !important;
-  background: rgba(0, 180, 216, 0.2) !important;
-  padding: 2px 8px !important;
+  letter-spacing: 1px !important;
+  color: #00f5d4 !important;
+  background: rgba(0, 245, 212, 0.15) !important;
+  border: 1px solid rgba(0, 245, 212, 0.3) !important;
+  padding: 3px 10px !important;
   border-radius: 4px !important;
   width: fit-content !important;
+  text-shadow: 0 0 6px rgba(0, 245, 212, 0.5) !important;
 }
 
 .gta-shield-pc-news-title {
   font-size: 15px !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   color: #ffffff !important;
   line-height: 1.4 !important;
 }
@@ -158,7 +193,7 @@ article:not([data-gta-shield-scanned])[data-gta-shield-prehide],
 .gta-shield-pc-news-note {
   font-size: 12px !important;
   color: #90e0ef !important;
-  opacity: 0.8 !important;
+  opacity: 0.85 !important;
 }
 
 /* 6. Full-Page Blocker Screen */

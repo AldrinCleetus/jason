@@ -1,6 +1,6 @@
 {
   "name": "gta-shield",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Fail-closed spoiler protection blocking GTA 6 content across YouTube, Reddit, Instagram, and the web until PC launch.",
   "main": "src/engine.js",
   "scripts": {

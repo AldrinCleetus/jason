@@ -1,15 +1,20 @@
-/* GTA Shield - Options Page Styles */
+/* GTA Shield - Options Page Styles (Vice City Neon Edition) */
 :root {
-  --bg-dark: #090d16;
-  --bg-sidebar: #0f141f;
-  --bg-card: #151b28;
-  --bg-input: #1e2638;
-  --accent-red: #e63946;
-  --accent-cyan: #00b4d8;
-  --accent-green: #2ea043;
-  --border: #242c3d;
-  --text-main: #f0f6fc;
-  --text-muted: #8b949e;
+  --bg-dark: #0a0512;
+  --bg-sidebar: #120820;
+  --bg-card: #180b2a;
+  --bg-input: #23103c;
+  --accent-pink: #ff2a85;
+  --accent-pink-glow: rgba(255, 42, 133, 0.4);
+  --accent-purple: #7209b7;
+  --accent-cyan: #00f5d4;
+  --accent-cyan-glow: rgba(0, 245, 212, 0.4);
+  --accent-orange: #ff7b00;
+  --accent-red: #ff2a85;
+  --accent-green: #00f5d4;
+  --border: #351554;
+  --text-main: #fce7f3;
+  --text-muted: #c9a4d8;
 }
 
 * {
@@ -95,9 +100,10 @@ body {
 }
 
 .nav-item.active {
-  background-color: var(--accent-red);
+  background: linear-gradient(135deg, #ff2a85 0%, #ff7b00 100%);
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+  box-shadow: 0 4px 14px var(--accent-pink-glow);
+  font-weight: 700;
 }
 
 .sidebar-footer {

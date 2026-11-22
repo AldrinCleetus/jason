@@ -1,5 +1,5 @@
 /**
- * Script to generate crisp PNG icons for GTA Shield (16x16, 48x48, 128x128).
+ * Script to generate crisp GTA VI / Vice City themed PNG icons (16x16, 48x48, 128x128).
  * Pure Node.js using zlib and Buffer, zero external dependencies.
  */
 const fs = require('fs');
@@ -35,11 +35,9 @@ function createChunk(type, data) {
   return Buffer.concat([lenBuf, typeBuf, data, crcBuf]);
 }
 
-function generateShieldPNG(size) {
+function generateViceCityShieldPNG(size) {
   const width = size;
   const height = size;
-
-  // Raw image RGBA buffer: height scanlines, each having 1 filter byte + width*4 bytes
   const scanlines = [];
 
   const centerX = width / 2;
@@ -48,35 +46,29 @@ function generateShieldPNG(size) {
 
   for (let y = 0; y < height; y++) {
     const line = Buffer.alloc(1 + width * 4);
-    line[0] = 0; // Filter type: None
+    line[0] = 0; // Filter: None
 
     for (let x = 0; x < width; x++) {
       const idx = 1 + x * 4;
 
-      // Normalized coordinates from center (-1 to 1)
       const nx = (x - centerX) / radius;
       const ny = (y - centerY) / radius;
 
-      // Shield shape condition:
-      // Top curve / flat top with slight curve
-      // Curved downward taper to a point at bottom (nx=0, ny=1)
       let inShield = false;
       let inBorder = false;
 
       if (ny >= -0.9 && ny <= 1.0) {
-        // Width of shield at vertical level ny
         let maxWidth;
         if (ny <= 0.1) {
           maxWidth = 0.95;
         } else {
-          // taper down smoothly to 0 at ny = 1.0
           const t = (ny - 0.1) / 0.9;
           maxWidth = 0.95 * (1 - t * t);
         }
 
         if (Math.abs(nx) <= maxWidth) {
           inShield = true;
-          if (Math.abs(nx) >= maxWidth - 0.15 || ny <= -0.75 || ny >= 0.85) {
+          if (Math.abs(nx) >= maxWidth - 0.14 || ny <= -0.76 || ny >= 0.86) {
             inBorder = true;
           }
         }
@@ -84,18 +76,40 @@ function generateShieldPNG(size) {
 
       if (inShield) {
         if (inBorder) {
-          // Bright gold / red shield border
-          line[idx + 0] = 255; // R
-          line[idx + 1] = 215; // G
-          line[idx + 2] = 0;   // B (Gold)
+          // GTA VI Neon Sunset Gradient Border: Hot Pink (#FF2A85) to Sunset Orange (#FFAA00)
+          const gradFactor = (ny + 0.9) / 1.9; // 0 (top) to 1 (bottom)
+          line[idx + 0] = Math.floor(255 - gradFactor * 20); // R
+          line[idx + 1] = Math.floor(42 + gradFactor * 130);  // G (Pink to Orange/Gold)
+          line[idx + 2] = Math.floor(133 * (1 - gradFactor)); // B
           line[idx + 3] = 255; // A
         } else {
-          // Crimson / dark red gradient body
-          const grad = Math.min(255, Math.max(0, Math.floor(180 - ny * 60)));
-          line[idx + 0] = 230; // R
-          line[idx + 1] = 57;  // G
-          line[idx + 2] = 70;  // B
-          line[idx + 3] = 255; // A
+          // Inner Body: Vice City Deep Purple to Magenta Sunset Gradient
+          const gradFactor = (ny + 0.9) / 1.9;
+          const r = Math.floor(45 + gradFactor * 170);   // Dark violet to hot magenta
+          const g = Math.floor(10 + gradFactor * 30);
+          const b = Math.floor(75 + gradFactor * 50);
+
+          // Center VI accent highlight if icon is large enough
+          let isVIHighlight = false;
+          if (size >= 48) {
+            const inVLeft = (nx >= -0.55 && nx <= -0.35 && ny >= -0.4 && ny <= 0.3 && Math.abs(nx + 0.45 - (ny * 0.25)) < 0.1);
+            const inVRight = (nx >= -0.35 && nx <= -0.15 && ny >= -0.4 && ny <= 0.3 && Math.abs(nx + 0.25 + (ny * 0.25)) < 0.1);
+            const inI = (nx >= 0.15 && nx <= 0.35 && ny >= -0.4 && ny <= 0.3);
+            isVIHighlight = inVLeft || inVRight || inI;
+          }
+
+          if (isVIHighlight) {
+            // Neon Cyan / Mint accent (#00F5D4)
+            line[idx + 0] = 0;
+            line[idx + 1] = 245;
+            line[idx + 2] = 212;
+            line[idx + 3] = 255;
+          } else {
+            line[idx + 0] = r;
+            line[idx + 1] = g;
+            line[idx + 2] = b;
+            line[idx + 3] = 255;
+          }
         }
       } else {
         // Transparent
@@ -111,32 +125,27 @@ function generateShieldPNG(size) {
   const rawData = Buffer.concat(scanlines);
   const compressed = zlib.deflateSync(rawData);
 
-  // PNG Signature
   const sig = Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]);
 
-  // IHDR
   const ihdrData = Buffer.alloc(13);
   ihdrData.writeUInt32BE(width, 0);
   ihdrData.writeUInt32BE(height, 4);
-  ihdrData[8] = 8; // 8 bits per channel
-  ihdrData[9] = 6; // RGBA
-  ihdrData[10] = 0; // Deflate
-  ihdrData[11] = 0; // Filter standard
-  ihdrData[12] = 0; // Non-interlaced
+  ihdrData[8] = 8;
+  ihdrData[9] = 6;
+  ihdrData[10] = 0;
+  ihdrData[11] = 0;
+  ihdrData[12] = 0;
   const ihdrChunk = createChunk('IHDR', ihdrData);
 
-  // IDAT
   const idatChunk = createChunk('IDAT', compressed);
-
-  // IEND
   const iendChunk = createChunk('IEND', Buffer.alloc(0));
 
   return Buffer.concat([sig, ihdrChunk, idatChunk, iendChunk]);
 }
 
 [16, 48, 128].forEach(size => {
-  const pngBuf = generateShieldPNG(size);
-  const outPath = path.join(__dirname, 'icons', `icon-${size}.png`);
+  const pngBuf = generateViceCityShieldPNG(size);
+  const outPath = path.join(__dirname, '..', 'icons', `icon-${size}.png`);
   fs.writeFileSync(outPath, pngBuf);
-  console.log(`Generated: ${outPath} (${pngBuf.length} bytes)`);
+  console.log(`Generated Vice City Icon: ${outPath} (${pngBuf.length} bytes)`);
 });

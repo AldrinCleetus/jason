@@ -5,6 +5,7 @@
 **Fail-Closed Firefox (Manifest V3) Spoiler Protection Extension for Grand Theft Auto VI**
 
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-orange?style=flat-square&logo=firefox)](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Build_a_cross_browser_extension)
+[![Version](https://img.shields.io/badge/Version-v1.2.0%20Vice%20Edition-ff2a85?style=flat-square)](CHANGELOG.md)
 [![Firefox](https://img.shields.io/badge/Firefox-109%2B-blue?style=flat-square&logo=firefox-browser)](https://www.mozilla.org/firefox/)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-success?style=flat-square)](package.json)
 [![100% Local](https://img.shields.io/badge/Privacy-100%25%20Local-brightgreen?style=flat-square)](src/engine.js)
@@ -56,22 +57,26 @@ GTA Shield cleanly separates extraction, scoring, DOM interception, and user con
 
 ```mermaid
 flowchart TD
-    A["Web Page DOM / Shadow Root"] -->|MutationObserver & History API| B["src/content.js<br/>(Content Coordinator)"]
-    B -->|Check Site Match| C{"Active Adapter"}
-    C -->|YouTube| D["src/adapters/youtube.js"]
-    C -->|Reddit| E["src/adapters/reddit.js"]
-    C -->|Instagram| F["src/adapters/instagram.js"]
-    C -->|Generic| G["src/adapters/generic.js"]
+    A["Web Page DOM or Shadow Root"] --> B["Content Coordinator (content.js)"]
+    B --> C{"Resolve Site Adapter"}
+    C -->|YouTube| D["YouTube Adapter"]
+    C -->|Reddit| E["Reddit Adapter"]
+    C -->|Instagram| F["Instagram Adapter"]
+    C -->|Generic| G["Generic Fallback Adapter"]
 
-    D & E & F & G -->|Extract Signals<br/>(Title, AllText, AriaLabels, AltText, Source, Hrefs)| H["src/engine.js<br/>(Scoring Engine)"]
-    H -->|Normalize Diacritics, Leetspeak, Spacing| I["Rule & Tier Evaluator"]
-    I -->|Check PC News Bypass| J{"PC News Mode?"}
-    J -->|Matches Pattern| K["Show Text-Only Card<br/>(Strip Media/Thumbnails)"]
-    J -->|No Bypass| L{"Filter Level<br/>(Strict / Balanced / Light)"}
-    L -->|Trigger Score Threshold| M["Block Card & Neutralize Content<br/>(Insert Shield Placeholder)"]
-    L -->|Clean Content| N["Reveal Card<br/>(Mark data-gta-shield-scanned)"]
-    M -->|Increment Tab Counter| O["src/background.js<br/>(Badge Coordinator)"]
-    O -->|Update Badge Text & Color| P["Firefox Toolbar Icon Badge"]
+    D --> H["Scoring Engine (engine.js)"]
+    E --> H
+    F --> H
+    G --> H
+
+    H --> I["Normalization and Tier Scoring"]
+    I --> J{"PC News Mode Enabled?"}
+    J -->|Matches PC Launch Pattern| K["Show Sanitized Card (Media Stripped)"]
+    J -->|No Bypass Match| L{"Evaluate Filter Level"}
+    L -->|Threshold Triggered| M["Neutralize Content and Show GTA Shield"]
+    L -->|Clean Content| N["Reveal Card on Page"]
+    M --> O["Badge Service (background.js)"]
+    O --> P["Toolbar Action Badge Counter"]
 ```
 
 ---

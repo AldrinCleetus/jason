@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>GTA Shield - Visual Test Fixture & Verification</title>
+  <title>GTA Shield - Visual Test Fixture &amp; Verification (Vice City Edition)</title>
   <link rel="stylesheet" href="../src/prehide.css">
   <style>
     body {
-      background-color: #0b0e14;
-      color: #e6edf3;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0a0512;
+      color: #fce7f3;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
       margin: 0;
       padding: 24px;
+      background-image: radial-gradient(circle at 50% 0%, rgba(114, 9, 183, 0.2) 0%, transparent 80%);
     }
     .test-header {
-      border-bottom: 1px solid #30363d;
+      border-bottom: 1px solid #351554;
       padding-bottom: 16px;
       margin-bottom: 24px;
       display: flex;
@@ -23,32 +24,41 @@
     .test-header h1 {
       margin: 0;
       font-size: 24px;
-      color: #f0f6fc;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 42, 133, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     .btn-run {
-      background: #e63946;
+      background: linear-gradient(135deg, #ff2a85 0%, #ff7b00 100%);
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 10px 22px;
       border-radius: 8px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       font-size: 14px;
-      box-shadow: 0 4px 12px rgba(230, 57, 70, 0.4);
+      box-shadow: 0 4px 16px rgba(255, 42, 133, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
     }
     .btn-run:hover {
-      background: #d90429;
+      box-shadow: 0 6px 22px rgba(255, 42, 133, 0.7);
+      transform: translateY(-1px);
     }
     .test-results-banner {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 8px;
+      background: #140922;
+      border: 1px solid #ff2a85;
+      box-shadow: 0 0 15px rgba(255, 42, 133, 0.15);
+      border-radius: 10px;
       padding: 16px;
       margin-bottom: 28px;
-      font-family: monospace;
+      font-family: "SF Mono", Consolas, monospace;
       white-space: pre-wrap;
       max-height: 200px;
       overflow-y: auto;
+      color: #00f5d4;
     }
     .grid {
       display: grid;
@@ -56,25 +66,26 @@
       gap: 20px;
     }
     .fixture-card {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 10px;
+      background: #150a24;
+      border: 1px solid #351554;
+      border-radius: 12px;
       padding: 16px;
       position: relative;
     }
     .fixture-badge {
       display: inline-block;
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
       padding: 3px 8px;
       border-radius: 4px;
       margin-bottom: 10px;
+      letter-spacing: 0.5px;
     }
-    .badge-yt { background: #ff0000; color: white; }
-    .badge-reddit { background: #ff4500; color: white; }
-    .badge-ig { background: #e1306c; color: white; }
-    .badge-generic { background: #0077b6; color: white; }
+    .badge-yt { background: #ff0055; color: white; }
+    .badge-reddit { background: #ff5400; color: white; }
+    .badge-ig { background: linear-gradient(135deg, #7209b7, #f72585); color: white; }
+    .badge-generic { background: #00b4d8; color: white; }
 
     .card-title {
       font-size: 15px;
