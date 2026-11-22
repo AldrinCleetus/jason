@@ -26,6 +26,8 @@
       'ytd-comment-view-model',
       'ytd-post-renderer',
       'ytd-notification-renderer',
+      'yt-lockup-view-model',
+      'ytd-rich-grid-media',
       '.ytp-ce-element'
     ],
     title: [
@@ -33,6 +35,15 @@
       '#video-title-link',
       'h3.title-style',
       'yt-formatted-string#video-title',
+      'a.yt-lockup-metadata-view-model-wiz__title',
+      '.yt-lockup-metadata-view-model-wiz__title',
+      'h3.yt-lockup-metadata-view-model-wiz__title',
+      'h3 a[href*="/watch"]',
+      'a[href*="/watch"]',
+      'h3 a',
+      'h3',
+      'h2',
+      '.yt-core-attributed-string',
       '#content-text', // for comments
       '.ytp-ce-title'
     ],
@@ -42,6 +53,10 @@
       '.ytd-channel-name a',
       '#author-text',
       'yt-formatted-string#text.ytd-channel-name',
+      '.yt-lockup-byline-view-model-wiz a',
+      '.yt-lockup-byline-view-model-wiz',
+      'a[href*="/@"]',
+      'a[href*="/channel/"]',
       '.ytp-ce-channel-title'
     ],
     description: [
@@ -53,12 +68,15 @@
       'ytd-thumbnail img',
       'yt-image img',
       '#thumbnail img',
+      'img.yt-core-image',
+      '.yt-thumbnail-view-model img',
       '.ytp-ce-element img'
     ],
     links: [
       'a#thumbnail',
       'a#video-title-link',
-      'a.yt-simple-endpoint'
+      'a.yt-simple-endpoint',
+      'a[href*="/watch"]'
     ],
     searchSuggestions: [
       'ul.sbsb_b li',
@@ -95,51 +113,81 @@
     let altText = '';
     let thumbnail = '';
     const hrefs = [];
+    const ariaLabelsList = [];
 
-    // Extract Title
+    // 1. Gather all aria-labels from cardElement and any descendants
+    if (cardElement.getAttribute('aria-label')) {
+      ariaLabelsList.push(cardElement.getAttribute('aria-label'));
+    }
+    const ariaEls = cardElement.querySelectorAll('[aria-label]');
+    for (let i = 0; i < ariaEls.length; i++) {
+      const a = ariaEls[i].getAttribute('aria-label');
+      if (a && !ariaLabelsList.includes(a)) {
+        ariaLabelsList.push(a);
+      }
+    }
+
+    // 2. Extract Title from specific selectors
     for (const sel of SELECTORS.title) {
       const el = cardElement.querySelector(sel);
-      if (el && el.textContent) {
+      if (el && el.textContent && el.textContent.trim()) {
         title = el.textContent.trim();
         break;
       }
     }
 
-    // Extract Channel / Author
+    // Fallback: If title selector missed, search headings & watch links
+    if (!title) {
+      const heading = cardElement.querySelector('h1, h2, h3, h4, a[href*="/watch"]');
+      if (heading && heading.textContent && heading.textContent.trim()) {
+        title = heading.textContent.trim();
+      }
+    }
+
+    // 3. Extract Channel / Author
     for (const sel of SELECTORS.channel) {
       const el = cardElement.querySelector(sel);
-      if (el && el.textContent) {
+      if (el && el.textContent && el.textContent.trim()) {
         author = el.textContent.trim();
         break;
       }
     }
 
-    // Extract Description / Snippet
+    // 4. Extract Description / Snippet
     for (const sel of SELECTORS.description) {
       const el = cardElement.querySelector(sel);
-      if (el && el.textContent) {
+      if (el && el.textContent && el.textContent.trim()) {
         description = el.textContent.trim();
         break;
       }
     }
 
-    // Extract Thumbnail & Alt
-    for (const sel of SELECTORS.thumbnail) {
-      const img = cardElement.querySelector(sel);
-      if (img) {
-        altText = img.getAttribute('alt') || '';
-        thumbnail = img.getAttribute('src') || '';
-        break;
-      }
+    // 5. Extract Thumbnail & Alt Text from all images
+    const imgEls = cardElement.querySelectorAll('img');
+    for (let i = 0; i < imgEls.length; i++) {
+      const alt = imgEls[i].getAttribute('alt');
+      const src = imgEls[i].getAttribute('src');
+      if (alt) altText += ' ' + alt;
+      if (src && !thumbnail) thumbnail = src;
     }
 
-    // Extract Links
+    // 6. Extract Links
     for (const sel of SELECTORS.links) {
       const links = cardElement.querySelectorAll(sel);
       for (let i = 0; i < links.length; i++) {
         const h = links[i].getAttribute('href');
         if (h && !hrefs.includes(h)) hrefs.push(h);
       }
+    }
+
+    // 7. Full text content fallback
+    const allText = (cardElement.textContent || '').trim();
+
+    // 8. If title is still empty but we have aria-label or textContent, extract best line
+    if (!title && ariaLabelsList.length > 0) {
+      title = ariaLabelsList[0].split(/•|\n/)[0].trim();
+    } else if (!title && allText) {
+      title = allText.split(/\n/)[0].trim();
     }
 
     // Check if channel page
@@ -149,11 +197,12 @@
       title,
       author,
       description,
-      altText,
+      altText: altText.trim(),
       thumbnail,
       hrefs,
-      ariaLabels: cardElement.getAttribute('aria-label') || '',
+      ariaLabels: ariaLabelsList.join(' '),
       titleAttrs: cardElement.getAttribute('title') || '',
+      allText,
       isChannelPage,
       pageTitle: document.title || ''
     };

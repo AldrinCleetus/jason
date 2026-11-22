@@ -179,6 +179,27 @@ function runTests() {
   }, { level: 'strict' });
   assert(multiSignal.shouldHide === true, 'Catches GTA 6 hidden in altText, thumbnail filename, and source');
 
+  // 9. Exact User Case Verification & allText / aria-label Fallbacks
+  console.log('\n--- 9. User Video Case & Robust Fallbacks ---');
+
+  const userVideoDirect = engine.scoreCard({
+    title: 'GTA6 LEAKER GUILTY, UBISOFT IN BIG TROUBLE? & MORE',
+    author: 'gameranx'
+  }, { level: 'strict' });
+  assert(userVideoDirect.shouldHide === true, 'Catches exact user video title directly');
+
+  const userVideoAllTextOnly = engine.scoreCard({
+    allText: 'GTA6 LEAKER GUILTY, UBISOFT IN BIG TROUBLE? & MORE\ngameranx\n456K views\n1 day ago',
+    author: 'gameranx'
+  }, { level: 'strict' });
+  assert(userVideoAllTextOnly.shouldHide === true, 'Catches video when title selector fails and only allText is present');
+
+  const userVideoAriaLabelOnly = engine.scoreCard({
+    ariaLabels: 'GTA6 LEAKER GUILTY, UBISOFT IN BIG TROUBLE? & MORE by gameranx 1 day ago 14 minutes, 24 seconds',
+    author: 'gameranx'
+  }, { level: 'strict' });
+  assert(userVideoAriaLabelOnly.shouldHide === true, 'Catches video when only aria-label is extracted from thumbnail link');
+
   console.log(`\n========================================`);
   console.log(`Total: ${totalTests} | Passed: ${passedTests} | Failed: ${failedTests}`);
   console.log(`========================================\n`);

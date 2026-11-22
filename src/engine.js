@@ -197,7 +197,8 @@
     }
 
     // Aggregate text signals
-    const title = signals.title || '';
+    let title = signals.title || '';
+    const allText = signals.allText || '';
     const description = signals.description || '';
     const caption = signals.caption || '';
     const altText = signals.altText || '';
@@ -212,9 +213,19 @@
     const hashtags = Array.isArray(signals.hashtags) ? signals.hashtags.join(' ') : (signals.hashtags || '');
     const hrefs = Array.isArray(signals.hrefs) ? signals.hrefs.join(' ') : (signals.hrefs || '');
 
+    // Fallback: If title is empty, use first non-empty line of allText or ariaLabels
+    if (!title) {
+      if (ariaLabels) {
+        title = ariaLabels.split(/•|\n/)[0].trim();
+      } else if (allText) {
+        title = allText.split(/\n/)[0].trim();
+      }
+    }
+
     // Combine all textual signals
     const rawCombined = [
       title,
+      allText,
       description,
       caption,
       altText,

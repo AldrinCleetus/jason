@@ -61,7 +61,7 @@
    */
   function processCard(card) {
     if (!card || card.nodeType !== Node.ELEMENT_NODE) return;
-    if (card.hasAttribute('data-gta-shield-scanned')) return;
+    if (card.getAttribute('data-gta-shield-scanned') === 'blocked') return;
 
     // Check if site is enabled
     if (!isSiteEnabled()) {
@@ -75,6 +75,31 @@
 
     try {
       const signals = activeAdapter.extractSignals(card, pageContext);
+      const currentText = (signals.allText || signals.title || signals.ariaLabels || '').trim();
+
+      // If card was already marked clean, only re-evaluate if content has changed/hydrated
+      if (card.getAttribute('data-gta-shield-scanned') === 'clean') {
+        if (card.__gtaScannedText === currentText) {
+          return;
+        }
+      }
+
+      // Hydration Check:
+      // If the card has no title, no aria-labels, and minimal text,
+      // it is an unhydrated component shell.
+      // Do NOT mark clean yet — retry until hydrated.
+      const hasContent = (signals.title && signals.title.trim().length > 0) ||
+                         (currentText.length > 5) ||
+                         (signals.ariaLabels && signals.ariaLabels.trim().length > 0);
+
+      if (!hasContent) {
+        card.__gtaHydrationRetries = (card.__gtaHydrationRetries || 0) + 1;
+        if (card.__gtaHydrationRetries <= 10) {
+          setTimeout(() => processCard(card), 100 * card.__gtaHydrationRetries);
+          return;
+        }
+      }
+
       const decision = engine.scoreCard(signals, currentSettings, pageContext);
 
       if (decision.shouldHide) {
@@ -85,12 +110,12 @@
         activeAdapter.showPCNews(card, decision, currentSettings);
       } else {
         card.setAttribute('data-gta-shield-scanned', 'clean');
+        card.__gtaScannedText = currentText;
       }
     } catch (err) {
       if (currentSettings.debugMode) {
         console.error('[GTA Shield] Error scanning card:', err, card);
       }
-      // Fail-safe: ensure card is not stuck hidden indefinitely if error occurs
       card.setAttribute('data-gta-shield-scanned', 'clean');
     }
   }
@@ -151,6 +176,15 @@
           const added = m.addedNodes[j];
           if (added.nodeType === Node.ELEMENT_NODE) {
             queueForScanning(added);
+
+            // Re-check parent card if an element was inserted inside an existing card
+            if (activeAdapter && activeAdapter.SELECTORS && activeAdapter.SELECTORS.cards) {
+              const selector = activeAdapter.SELECTORS.cards.join(', ');
+              const parentCard = added.closest(selector);
+              if (parentCard && parentCard.getAttribute('data-gta-shield-scanned') !== 'blocked') {
+                queueForScanning(parentCard);
+              }
+            }
           }
         }
       }

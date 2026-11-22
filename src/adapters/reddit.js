@@ -182,6 +182,7 @@
       commentPreviews: commentText,
       hrefs,
       ariaLabels: cardElement.getAttribute('aria-label') || '',
+      allText: (cardElement.textContent || '').trim(),
       isSubredditPage,
       pageTitle: document.title || ''
     };

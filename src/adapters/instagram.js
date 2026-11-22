@@ -138,6 +138,7 @@
       hashtags,
       hrefs,
       ariaLabels: cardElement.getAttribute('aria-label') || '',
+      allText: (cardElement.textContent || '').trim(),
       pageTitle: document.title || ''
     };
   }
