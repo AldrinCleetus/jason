@@ -1,0 +1,23 @@
+{
+  "name": "gta-shield",
+  "version": "1.0.0",
+  "description": "Fail-closed spoiler protection blocking GTA 6 content across YouTube, Reddit, Instagram, and the web until PC launch.",
+  "main": "src/engine.js",
+  "scripts": {
+    "test": "node test/test_engine.js",
+    "generate-icons": "node scripts/generate_icons.js"
+  },
+  "keywords": [
+    "firefox-extension",
+    "manifest-v3",
+    "gta-6",
+    "spoiler-blocker",
+    "fail-closed",
+    "content-filter"
+  ],
+  "author": "Aldrin",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
