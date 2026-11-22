@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GTA Shield - Settings & Options</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="options-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <span class="shield-logo">🛡️</span>
+        <div class="sidebar-title">
+          <h2>GTA SHIELD</h2>
+          <span class="sidebar-sub">Control Center</span>
+        </div>
+      </div>
+      <nav class="nav-menu">
+        <button type="button" class="nav-item active" data-tab="tab-tiers">
+          <span class="nav-icon">🏷️</span> Keyword Tiers
+        </button>
+        <button type="button" class="nav-item" data-tab="tab-lists">
+          <span class="nav-icon">🚫</span> Blocklists & Allowlists
+        </button>
+        <button type="button" class="nav-item" data-tab="tab-sites">
+          <span class="nav-icon">🌐</span> Site Toggles
+        </button>
+        <button type="button" class="nav-item" data-tab="tab-pcnews">
+          <span class="nav-icon">🎮</span> PC News Mode
+        </button>
+        <button type="button" class="nav-item" data-tab="tab-tester">
+          <span class="nav-icon">🔬</span> Live Score Tester
+        </button>
+        <button type="button" class="nav-item" data-tab="tab-advanced">
+          <span class="nav-icon">⚙️</span> Advanced & Debug
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <button type="button" class="btn btn-reset" id="reset-defaults-btn">Reset Defaults</button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <header class="content-header">
+        <h1 id="page-title">Keyword Tiers</h1>
+        <div class="save-status" id="save-status">All changes saved locally</div>
+      </header>
+
+      <!-- TAB 1: KEYWORD TIERS -->
+      <section class="tab-panel active" id="tab-tiers">
+        <div class="panel-intro">
+          Configure the three weighted tiers used by the core scoring engine.
+        </div>
+
+        <!-- Tier 1 -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <h3>Tier 1 Keywords (Strong — Hide Alone)</h3>
+              <p class="card-desc">Presence of any of these terms triggers an immediate hide across all protection levels.</p>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary add-tag-btn" data-target="tier1">Add Keyword</button>
+          </div>
+          <div class="tag-container" id="tier1-tags"></div>
+        </div>
+
+        <!-- Tier 2 -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <h3>Tier 2 Keywords (Ambiguous — Requires GTA Context)</h3>
+              <p class="card-desc">Ambiguous keywords (character names, leaks, missions, trailers) that only count when paired with GTA context.</p>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary add-tag-btn" data-target="tier2">Add Keyword</button>
+          </div>
+          <div class="tag-container" id="tier2-tags"></div>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <h3>Tier 3 Keywords (Contextual Boost)</h3>
+              <p class="card-desc">Weak keywords that provide GTA context when combined with Tier 2 keywords.</p>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary add-tag-btn" data-target="tier3">Add Keyword</button>
+          </div>
+          <div class="tag-container" id="tier3-tags"></div>
+        </div>
+      </section>
+
+      <!-- TAB 2: BLOCKLISTS & ALLOWLISTS -->
+      <section class="tab-panel" id="tab-lists">
+        <div class="panel-intro">
+          Manage channels, subreddits, and accounts that should always be hidden or allowed.
+        </div>
+
+        <!-- YouTube Channels Blocklist -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <h3>YouTube Channels Blocklist</h3>
+              <p class="card-desc">Videos and posts from these channels are blocked immediately under Strict protection.</p>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary add-tag-btn" data-target="block-channels">Add Channel</button>
+          </div>
+          <div class="tag-container" id="block-channels-tags"></div>
+        </div>
+
+        <!-- Subreddits Blocklist -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <h3>Subreddits Blocklist</h3>
+              <p class="card-desc">Posts from these subreddits (e.g. r/GTA6, r/GTA_VI) are blocked across feeds.</p>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary add-tag-btn" data-target="block-subreddits">Add Subreddit</button>
+          </div>
+          <div class="tag-container" id="block-subreddits-tags"></div>
+        </div>
+
+        <!-- Instagram Accounts Blocklist -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <h3>Instagram Accounts Blocklist</h3>
+              <p class="card-desc">Posts, reels, and stories from these accounts are hidden.</p>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary add-tag-btn" data-target="block-accounts">Add Account</button>
+          </div>
+          <div class="tag-container" id="block-accounts-tags"></div>
+        </div>
+
+        <!-- Monitored Paranoid Accounts -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <h3>Extra Paranoid Monitored Accounts</h3>
+              <p class="card-desc">Accounts completely hidden when Extra Paranoid Mode is enabled (even without text).</p>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary add-tag-btn" data-target="paranoid-accounts">Add Account</button>
+          </div>
+          <div class="tag-container" id="paranoid-accounts-tags"></div>
+        </div>
+
+        <!-- Allowlists -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <h3>Trusted Channels / Allowlists</h3>
+              <p class="card-desc">Channels or accounts that will never be hidden (e.g. trusted tech breakdown channels).</p>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary add-tag-btn" data-target="allow-channels">Add Trusted Channel</button>
+          </div>
+          <div class="tag-container" id="allow-channels-tags"></div>
+        </div>
+      </section>
+
+      <!-- TAB 3: SITE TOGGLES -->
+      <section class="tab-panel" id="tab-sites">
+        <div class="panel-intro">
+          Toggle GTA Shield on a per-site basis with one click.
+        </div>
+        <div class="settings-card">
+          <div class="site-toggle-row">
+            <div class="site-info">
+              <span class="site-name">YouTube (youtube.com)</span>
+              <span class="site-desc">Home grid, search results, sidebar, Shorts, playlists, end screens, and comments</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="site-toggle-youtube" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="site-toggle-row">
+            <div class="site-info">
+              <span class="site-name">Reddit (reddit.com & old.reddit.com)</span>
+              <span class="site-desc">Feed posts, comments, trending sidebar, crossposts, and subreddits</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="site-toggle-reddit" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="site-toggle-row">
+            <div class="site-info">
+              <span class="site-name">Instagram (instagram.com)</span>
+              <span class="site-desc">Feed, Explore grid, Reels skip-auto, Stories tray, and comments</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="site-toggle-instagram" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="site-toggle-row">
+            <div class="site-info">
+              <span class="site-name">Generic Web Fallback</span>
+              <span class="site-desc">Heuristic card detection and full-page blocking for news and gaming websites</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="site-toggle-generic" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: PC NEWS MODE -->
+      <section class="tab-panel" id="tab-pcnews">
+        <div class="panel-intro">
+          When PC News Mode is active, launch and announcement headlines get through while all thumbnails and media are stripped.
+        </div>
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <h3>PC News Mode Toggle</h3>
+              <p class="card-desc">Bypass strictly for PC release/date announcements.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="options-pcnews-toggle" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <h3>Pattern Criteria</h3>
+              <p class="card-desc">Requires 1 term from Primary + 1 term from Platform + 1 term from Action.</p>
+            </div>
+          </div>
+          <div class="rule-box">
+            <div class="rule-group">
+              <strong>Primary:</strong> GTA 6, GTA VI, Grand Theft Auto 6, Grand Theft Auto VI
+            </div>
+            <div class="rule-group">
+              <strong>Platform:</strong> PC, Steam, Epic, Epic Games, Windows
+            </div>
+            <div class="rule-group">
+              <strong>Action:</strong> Release, Launch, Announce, Date, Port, Confirmed, Window, Specs
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: LIVE TESTER -->
+      <section class="tab-panel" id="tab-tester">
+        <div class="panel-intro">
+          Test any title, description, or author against the current scoring engine and active settings.
+        </div>
+        <div class="settings-card">
+          <div class="form-group">
+            <label>Card Title / Headline:</label>
+            <input type="text" id="test-title" class="input-text" placeholder="e.g. GTA 6 PC Release Date Announced on Steam">
+          </div>
+          <div class="form-group">
+            <label>Description / Caption (optional):</label>
+            <input type="text" id="test-desc" class="input-text" placeholder="e.g. Rockstar confirms PC launch window">
+          </div>
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Author / Channel (optional):</label>
+              <input type="text" id="test-author" class="input-text" placeholder="e.g. IGN">
+            </div>
+            <div class="form-group flex-1">
+              <label>Subreddit (optional):</label>
+              <input type="text" id="test-sub" class="input-text" placeholder="e.g. r/gaming">
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" id="run-test-btn">Run Engine Evaluation</button>
+
+          <!-- Result Box -->
+          <div class="test-result-box" id="test-result-box" style="display: none;">
+            <div class="result-header">
+              <span class="result-badge" id="result-badge">HIDE</span>
+              <span class="result-score" id="result-score">Score: 100</span>
+            </div>
+            <div class="result-reasons" id="result-reasons"></div>
+            <div class="result-matches" id="result-matches"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: ADVANCED & DEBUG -->
+      <section class="tab-panel" id="tab-advanced">
+        <div class="panel-intro">
+          Developer options, debugging logs, and diagnostics.
+        </div>
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <h3>Console Debug Mode</h3>
+              <p class="card-desc">Logs detailed signal extraction, scoring breakdowns, and decisions to the browser console.</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="options-debug-toggle">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../src/defaults.js"></script>
+  <script src="../src/engine.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

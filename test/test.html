@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GTA Shield - Visual Test Fixture & Verification</title>
+  <link rel="stylesheet" href="../src/prehide.css">
+  <style>
+    body {
+      background-color: #0b0e14;
+      color: #e6edf3;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+    }
+    .test-header {
+      border-bottom: 1px solid #30363d;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .test-header h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #f0f6fc;
+    }
+    .btn-run {
+      background: #e63946;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(230, 57, 70, 0.4);
+    }
+    .btn-run:hover {
+      background: #d90429;
+    }
+    .test-results-banner {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 28px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .fixture-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 16px;
+      position: relative;
+    }
+    .fixture-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .badge-yt { background: #ff0000; color: white; }
+    .badge-reddit { background: #ff4500; color: white; }
+    .badge-ig { background: #e1306c; color: white; }
+    .badge-generic { background: #0077b6; color: white; }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .card-meta {
+      font-size: 12px;
+      color: #8b949e;
+      margin-bottom: 10px;
+    }
+    .card-thumb {
+      width: 100%;
+      height: 120px;
+      background: #21262d;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8b949e;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="test-header">
+    <div>
+      <h1>GTA Shield - Verification Test Fixture</h1>
+      <p style="color: #8b949e; margin: 4px 0 0 0;">Sample cards across YouTube, Reddit, Instagram, and Generic Web</p>
+    </div>
+    <button class="btn-run" id="btn-run-all">Run Engine Scanner</button>
+  </div>
+
+  <div class="test-results-banner" id="results-banner">Ready. Click "Run Engine Scanner" to evaluate and filter cards below in real-time.</div>
+
+  <div class="grid">
+    <!-- Card 1: Direct Tier 1 YouTube -->
+    <ytd-rich-item-renderer class="fixture-card">
+      <span class="fixture-badge badge-yt">YouTube Video</span>
+      <div class="card-thumb">
+        <img src="https://example.com/thumb1.jpg" alt="GTA 6 Trailer 2 Breakdown">
+      </div>
+      <div id="video-title" class="card-title">GTA 6 Gameplay & Story Details Leak Breakdown</div>
+      <div id="channel-name" class="card-meta">By GamingNewsCentral • 500k views</div>
+      <div id="description-text">Full breakdown of the new GTA 6 map, missions, and story mechanics.</div>
+    </ytd-rich-item-renderer>
+
+    <!-- Card 2: Obfuscated Tier 1 YouTube -->
+    <ytd-video-renderer class="fixture-card">
+      <span class="fixture-badge badge-yt">YouTube Obfuscated</span>
+      <div class="card-thumb">
+        <img src="https://example.com/thumb2.jpg" alt="gta💀6 full ending">
+      </div>
+      <div id="video-title" class="card-title">g t a 6 full ending leak revealed!</div>
+      <div id="channel-name" class="card-meta">By LeakMaster • 20k views</div>
+      <div id="description-text">gta💀6 major story ending spoiler details inside.</div>
+    </ytd-video-renderer>
+
+    <!-- Card 3: PC News Bypass YouTube -->
+    <ytd-grid-video-renderer class="fixture-card">
+      <span class="fixture-badge badge-yt">YouTube PC News</span>
+      <div class="card-thumb">
+        <img src="https://example.com/thumb3.jpg" alt="GTA 6 PC Release Window">
+      </div>
+      <div id="video-title" class="card-title">GTA 6 PC release date confirmed for Steam and Epic Games Store</div>
+      <div id="channel-name" class="card-meta">By PCGamer • 120k views</div>
+      <div id="description-text">Rockstar confirms PC launch window and system requirements.</div>
+    </ytd-grid-video-renderer>
+
+    <!-- Card 4: YouTube Comment Spoiler -->
+    <ytd-comment-thread-renderer class="fixture-card">
+      <span class="fixture-badge badge-yt">YouTube Comment</span>
+      <div id="author-text" class="card-meta">User @spoiler_bot • 2 hours ago</div>
+      <div id="content-text" class="card-title">In the end of GTA 6 Jason sacrifices himself to save Lucia!</div>
+    </ytd-comment-thread-renderer>
+
+    <!-- Card 5: Reddit Post Tier 1 -->
+    <shreddit-post class="fixture-card" post-title="Major leak from r/GTA6 on Leonida map coordinates">
+      <span class="fixture-badge badge-reddit">Reddit Post</span>
+      <div class="card-title">Major leak on Leonida map coordinates and hidden islands</div>
+      <div class="card-meta">Posted by u/leaker on r/GTA6</div>
+      <div class="card-thumb">[Map Image Screenshot]</div>
+    </shreddit-post>
+
+    <!-- Card 6: Reddit Post Tier 2 + Tier 3 Combo -->
+    <article class="fixture-card" data-testid="post-container">
+      <span class="fixture-badge badge-reddit">Reddit Post</span>
+      <div class="card-title">Lucia and Jason mission leaked details by Rockstar Games</div>
+      <div class="card-meta">Posted by u/gamer on r/gaming • Flair: Leak</div>
+      <p>Inside sources at Rockstar confirm character switches between Lucia and Jason.</p>
+    </article>
+
+    <!-- Card 7: Reddit Post Safe (Tier 2 without GTA Context) -->
+    <shreddit-post class="fixture-card" post-title="Lucia wins best actress in theater drama festival">
+      <span class="fixture-badge badge-reddit">Reddit Safe</span>
+      <div class="card-title">Lucia wins best actress in theater drama festival</div>
+      <div class="card-meta">Posted by u/theater_fan on r/broadway</div>
+      <p>A phenomenal performance by Lucia in last night's indie stage play.</p>
+    </shreddit-post>
+
+    <!-- Card 8: Instagram Reel with Hashtags -->
+    <article class="fixture-card">
+      <span class="fixture-badge badge-ig">Instagram Reel</span>
+      <div class="card-thumb">[Reels Video Placeholder]</div>
+      <div class="card-title">New Vice City locations confirmed! #gta6 #gtavi #gtaleaks</div>
+      <div class="card-meta">@rockstarintel • Audio: Original sound</div>
+    </article>
+
+    <!-- Card 9: Vice City Safe (No GTA context) -->
+    <article class="fixture-card post">
+      <span class="fixture-badge badge-generic">Generic Safe</span>
+      <h3 class="card-title">Vice City 1980s Retro Synthwave Album Review</h3>
+      <div class="card-meta">By MusicWorld • Music Category</div>
+      <p>An amazing nostalgia-filled electronic music tribute to the neon vibes of Miami.</p>
+    </article>
+
+    <!-- Card 10: Blocklisted Channel -->
+    <ytd-rich-item-renderer class="fixture-card">
+      <span class="fixture-badge badge-yt">Blocklisted Channel</span>
+      <div class="card-thumb">[Video Thumbnail]</div>
+      <div id="video-title" class="card-title">Top 10 Secrets in Grand Theft Auto History</div>
+      <div id="channel-name" class="card-meta">By MrBossFTW • 2M views</div>
+      <div id="description-text">Discussion on open world secrets.</div>
+    </ytd-rich-item-renderer>
+  </div>
+
+  <script src="../src/defaults.js"></script>
+  <script src="../src/engine.js"></script>
+  <script src="../src/adapters/youtube.js"></script>
+  <script src="../src/adapters/reddit.js"></script>
+  <script src="../src/adapters/instagram.js"></script>
+  <script src="../src/adapters/generic.js"></script>
+
+  <script>
+    const banner = document.getElementById('results-banner');
+    const runBtn = document.getElementById('btn-run-all');
+    const settings = window.GTAShieldDefaults.DEFAULT_SETTINGS;
+
+    function evaluateFixture() {
+      let blockedCount = 0;
+      let pcNewsCount = 0;
+      let cleanCount = 0;
+      let logs = [];
+
+      const cards = document.querySelectorAll('.fixture-card');
+
+      cards.forEach((card, index) => {
+        let adapter = window.GTAShieldGenericAdapter;
+        if (card.matches('ytd-rich-item-renderer, ytd-video-renderer, ytd-grid-video-renderer, ytd-comment-thread-renderer')) {
+          adapter = window.GTAShieldYouTubeAdapter;
+        } else if (card.matches('shreddit-post, article[data-testid="post-container"]')) {
+          adapter = window.GTAShieldRedditAdapter;
+        } else if (card.querySelector('.badge-ig')) {
+          adapter = window.GTAShieldInstagramAdapter;
+        }
+
+        const signals = adapter.extractSignals(card);
+        const decision = window.GTAShieldEngine.scoreCard(signals, settings);
+
+        if (decision.shouldHide) {
+          adapter.hideCard(card, decision, settings);
+          blockedCount++;
+          logs.push(`Card ${index + 1} (${adapter.name}): [BLOCKED] Score: ${decision.score} - Reasons: ${decision.reasons.join(', ')}`);
+        } else if (decision.isPCNews) {
+          adapter.showPCNews(card, decision, settings);
+          pcNewsCount++;
+          logs.push(`Card ${index + 1} (${adapter.name}): [PC NEWS BYPASS] ${decision.reasons.join(', ')}`);
+        } else {
+          adapter.revealCard(card);
+          cleanCount++;
+          logs.push(`Card ${index + 1} (${adapter.name}): [CLEAN - SHOWN] No spoiler match`);
+        }
+      });
+
+      banner.textContent = `=== SCANNED ${cards.length} CARDS ===\n` +
+        `• Blocked Spoilers: ${blockedCount}\n` +
+        `• PC News Bypassed (Media Stripped): ${pcNewsCount}\n` +
+        `• Clean & Shown: ${cleanCount}\n\n` +
+        logs.join('\n');
+    }
+
+    runBtn.addEventListener('click', evaluateFixture);
+  </script>
+</body>
+</html>

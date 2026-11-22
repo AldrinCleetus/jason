@@ -1,0 +1,63 @@
+{
+  "manifest_version": 3,
+  "name": "GTA Shield - Spoiler Blocker",
+  "version": "1.0.0",
+  "description": "Fail-closed spoiler protection blocking GTA 6 content across YouTube, Reddit, Instagram, and the web until PC release.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    },
+    "default_title": "GTA Shield",
+    "default_popup": "ui/popup.html"
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "background": {
+    "scripts": [
+      "src/defaults.js",
+      "src/background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "css": [
+        "src/prehide.css"
+      ],
+      "js": [
+        "src/defaults.js",
+        "src/engine.js",
+        "src/adapters/youtube.js",
+        "src/adapters/reddit.js",
+        "src/adapters/instagram.js",
+        "src/adapters/generic.js",
+        "src/content.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "options_ui": {
+    "page": "ui/options.html",
+    "open_in_tab": true
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "gta-shield@spoiler-protection.local",
+      "strict_min_version": "109.0"
+    }
+  }
+}

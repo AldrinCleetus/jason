@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GTA Shield</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-area">
+        <span class="shield-icon">🛡️</span>
+        <div class="title-group">
+          <h1>GTA SHIELD</h1>
+          <span class="version-badge">v1.0 • MV3</span>
+        </div>
+      </div>
+      <div class="status-indicator" id="status-pill">
+        <span class="status-dot"></span>
+        <span id="status-text">ACTIVE</span>
+      </div>
+    </header>
+
+    <!-- Master Toggle Card -->
+    <section class="card master-card">
+      <div class="card-content">
+        <div class="label-group">
+          <span class="card-title">Fail-Closed Protection</span>
+          <span class="card-subtitle">Hide spoilers across all supported sites</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="master-toggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Protection Level Selector -->
+    <section class="section">
+      <label class="section-label">PROTECTION LEVEL</label>
+      <div class="segmented-control" id="level-control">
+        <button type="button" class="segment active" data-level="strict">
+          <span class="segment-name">Strict</span>
+          <span class="segment-sub">Fail-closed</span>
+        </button>
+        <button type="button" class="segment" data-level="balanced">
+          <span class="segment-name">Balanced</span>
+          <span class="segment-sub">Tier 1 + Context</span>
+        </button>
+        <button type="button" class="segment" data-level="light">
+          <span class="segment-name">Light</span>
+          <span class="segment-sub">Tier 1 only</span>
+        </button>
+      </div>
+      <div class="level-hint" id="level-hint">
+        Strict: Hides any Tier 1, any Tier 2 + Tier 3 combo, or blocklisted source. Click-to-reveal disabled.
+      </div>
+    </section>
+
+    <!-- Quick Features & Site Toggles -->
+    <section class="section">
+      <label class="section-label">FEATURES & BYPASSES</label>
+      <div class="feature-row">
+        <div class="feature-info">
+          <span class="feature-title">PC News Mode</span>
+          <span class="feature-desc">Show PC launch headlines with media stripped</span>
+        </div>
+        <label class="switch small">
+          <input type="checkbox" id="pc-news-toggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="feature-row" id="site-toggle-row">
+        <div class="feature-info">
+          <span class="feature-title" id="site-toggle-label">Active on this site</span>
+          <span class="feature-desc" id="site-toggle-desc">Filtering current domain</span>
+        </div>
+        <label class="switch small">
+          <input type="checkbox" id="site-toggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-info">
+          <span class="feature-title">Extra Paranoid Mode</span>
+          <span class="feature-desc">Block posts from all monitored GTA channels/accounts</span>
+        </div>
+        <label class="switch small">
+          <input type="checkbox" id="paranoid-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Statistics -->
+    <section class="stats-card">
+      <div class="stat-box">
+        <span class="stat-value" id="page-hidden-count">0</span>
+        <span class="stat-label">Hidden on this page</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-box">
+        <span class="stat-value" id="lifetime-hidden-count">0</span>
+        <span class="stat-label">Total Spoilers Blocked</span>
+      </div>
+    </section>
+
+    <!-- Footer Actions -->
+    <footer class="footer">
+      <button type="button" class="options-btn" id="open-options">
+        <span>⚙️ Options & Keyword Tiers</span>
+      </button>
+    </footer>
+  </div>
+
+  <script src="../src/defaults.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
