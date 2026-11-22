@@ -5,7 +5,9 @@
   "main": "src/engine.js",
   "scripts": {
     "test": "node test/test_engine.js",
-    "generate-icons": "node scripts/generate_icons.js"
+    "generate-icons": "node scripts/generate_icons.js",
+    "package": "node scripts/package_extension.js",
+    "build": "node scripts/package_extension.js"
   },
   "keywords": [
     "firefox-extension",

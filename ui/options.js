@@ -59,25 +59,34 @@
   }
 
   /**
-   * Renders tag pills with a remove button.
+   * Renders tag pills with a remove button safely without innerHTML.
    */
   function renderTags(containerId, list, onRemove) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    container.innerHTML = '';
+
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
 
     list.forEach((item, index) => {
       const pill = document.createElement('div');
       pill.className = 'tag-pill';
-      pill.innerHTML = `
-        <span>${item}</span>
-        <button type="button" class="remove-btn" title="Remove">&times;</button>
-      `;
 
-      pill.querySelector('.remove-btn').addEventListener('click', () => {
+      const textSpan = document.createElement('span');
+      textSpan.textContent = item;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'remove-btn';
+      removeBtn.title = 'Remove';
+      removeBtn.textContent = '×';
+      removeBtn.addEventListener('click', () => {
         onRemove(index);
       });
 
+      pill.appendChild(textSpan);
+      pill.appendChild(removeBtn);
       container.appendChild(pill);
     });
   }
@@ -243,7 +252,14 @@
     resultBadge.textContent = decision.decision;
     resultBadge.className = `result-badge ${decision.decision}`;
     resultScore.textContent = `Calculated Score: ${decision.score} (Level: ${decision.level})`;
-    resultReasons.innerHTML = `<strong>Reasons:</strong> ${decision.reasons.length ? decision.reasons.join(' • ') : 'No spoiler signals detected'}`;
+    while (resultReasons.firstChild) {
+      resultReasons.removeChild(resultReasons.firstChild);
+    }
+    const strongEl = document.createElement('strong');
+    strongEl.textContent = 'Reasons: ';
+    const textNode = document.createTextNode(decision.reasons.length ? decision.reasons.join(' • ') : 'No spoiler signals detected');
+    resultReasons.appendChild(strongEl);
+    resultReasons.appendChild(textNode);
 
     const det = decision.details || {};
     resultMatches.textContent = `Tier 1: [${(det.tier1Matches || []).join(', ')}] | Tier 2: [${(det.tier2Matches || []).join(', ')}] | Tier 3: [${(det.tier3Matches || []).join(', ')}]`;

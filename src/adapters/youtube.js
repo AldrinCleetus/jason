@@ -226,47 +226,51 @@
     const existing = cardElement.querySelector('.gta-shield-placeholder');
     if (existing) existing.remove();
 
-    // Create placeholder element
+    // Create placeholder element safely without innerHTML
     const placeholder = document.createElement('div');
     placeholder.className = 'gta-shield-placeholder';
     placeholder.setAttribute('role', 'alert');
 
-    let html = `
-      <div class="gta-shield-placeholder-icon">🛡️</div>
-      <div class="gta-shield-placeholder-body">
-        <div class="gta-shield-placeholder-title">GTA 6 Content Hidden</div>
-        <div class="gta-shield-placeholder-sub">Blocked by GTA Shield to prevent PC spoilers</div>
-    `;
+    const icon = document.createElement('div');
+    icon.className = 'gta-shield-placeholder-icon';
+    icon.textContent = '🌴';
+
+    const body = document.createElement('div');
+    body.className = 'gta-shield-placeholder-body';
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'gta-shield-placeholder-title';
+    titleEl.textContent = 'GTA 6 Content Hidden';
+
+    const subEl = document.createElement('div');
+    subEl.className = 'gta-shield-placeholder-sub';
+    subEl.textContent = 'Blocked by GTA Shield to prevent PC spoilers';
+
+    body.appendChild(titleEl);
+    body.appendChild(subEl);
 
     if (settings.debugMode) {
-      html += `
-        <div class="gta-shield-placeholder-debug">
-          Reasons: ${decision.reasons.join('; ')} | Score: ${decision.score} | Level: ${decision.level}
-        </div>
-      `;
+      const debugEl = document.createElement('div');
+      debugEl.className = 'gta-shield-placeholder-debug';
+      debugEl.textContent = `Reasons: ${decision.reasons.join('; ')} | Score: ${decision.score} | Level: ${decision.level}`;
+      body.appendChild(debugEl);
     }
-
-    // Click to reveal is available ONLY in Light level
-    if (settings.level === 'light') {
-      html += `
-        <button class="gta-shield-reveal-btn" type="button">Click to Reveal (Light Level)</button>
-      `;
-    }
-
-    html += `</div>`;
-    placeholder.innerHTML = html;
 
     if (settings.level === 'light') {
-      const btn = placeholder.querySelector('.gta-shield-reveal-btn');
-      if (btn) {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          revealCard(cardElement);
-        });
-      }
+      const btn = document.createElement('button');
+      btn.className = 'gta-shield-reveal-btn';
+      btn.type = 'button';
+      btn.textContent = 'Click to Reveal (Light Level)';
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        revealCard(cardElement);
+      });
+      body.appendChild(btn);
     }
 
+    placeholder.appendChild(icon);
+    placeholder.appendChild(body);
     cardElement.appendChild(placeholder);
   }
 
@@ -285,12 +289,21 @@
     banner.className = 'gta-shield-pc-news';
     banner.setAttribute('role', 'status');
 
-    banner.innerHTML = `
-      <div class="gta-shield-pc-news-badge">🎮 GTA Shield • PC News Bypass</div>
-      <div class="gta-shield-pc-news-title">${decision.details.title || 'GTA 6 PC Announcement'}</div>
-      <div class="gta-shield-pc-news-note">Media and thumbnails stripped to prevent spoiler exposure</div>
-    `;
+    const badge = document.createElement('div');
+    badge.className = 'gta-shield-pc-news-badge';
+    badge.textContent = '🎮 GTA Shield • PC News Bypass';
 
+    const titleEl = document.createElement('div');
+    titleEl.className = 'gta-shield-pc-news-title';
+    titleEl.textContent = decision.details.title || 'GTA 6 PC Announcement';
+
+    const noteEl = document.createElement('div');
+    noteEl.className = 'gta-shield-pc-news-note';
+    noteEl.textContent = 'Media and thumbnails stripped to prevent spoiler exposure';
+
+    banner.appendChild(badge);
+    banner.appendChild(titleEl);
+    banner.appendChild(noteEl);
     cardElement.appendChild(banner);
   }
 
@@ -332,15 +345,33 @@
           const contents = document.querySelector('ytd-browse[page-subtype="channels"] #contents');
           if (contents && !contents.getAttribute('data-gta-shield-blocked')) {
             contents.setAttribute('data-gta-shield-blocked', 'true');
-            contents.innerHTML = `
-              <div class="gta-shield-placeholder" style="margin: 40px auto; max-width: 600px;">
-                <div class="gta-shield-placeholder-icon">🛡️</div>
-                <div class="gta-shield-placeholder-body">
-                  <div class="gta-shield-placeholder-title">Channel Content Hidden</div>
-                  <div class="gta-shield-placeholder-sub">Channel "${channelName}" is on your GTA Shield blocklist.</div>
-                </div>
-              </div>
-            `;
+            while (contents.firstChild) {
+              contents.removeChild(contents.firstChild);
+            }
+            const banner = document.createElement('div');
+            banner.className = 'gta-shield-placeholder';
+            banner.style.cssText = 'margin: 40px auto; max-width: 600px;';
+
+            const bIcon = document.createElement('div');
+            bIcon.className = 'gta-shield-placeholder-icon';
+            bIcon.textContent = '🌴';
+
+            const bBody = document.createElement('div');
+            bBody.className = 'gta-shield-placeholder-body';
+
+            const bTitle = document.createElement('div');
+            bTitle.className = 'gta-shield-placeholder-title';
+            bTitle.textContent = 'Channel Content Hidden';
+
+            const bSub = document.createElement('div');
+            bSub.className = 'gta-shield-placeholder-sub';
+            bSub.textContent = `Channel "${channelName}" is on your GTA Shield blocklist.`;
+
+            bBody.appendChild(bTitle);
+            bBody.appendChild(bSub);
+            banner.appendChild(bIcon);
+            banner.appendChild(bBody);
+            contents.appendChild(banner);
           }
         }
       }

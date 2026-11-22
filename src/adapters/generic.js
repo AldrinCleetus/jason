@@ -148,45 +148,51 @@
     const existing = cardElement.querySelector('.gta-shield-placeholder');
     if (existing) existing.remove();
 
+    // Create placeholder element safely without innerHTML
     const placeholder = document.createElement('div');
     placeholder.className = 'gta-shield-placeholder';
     placeholder.setAttribute('role', 'alert');
 
-    let html = `
-      <div class="gta-shield-placeholder-icon">🛡️</div>
-      <div class="gta-shield-placeholder-body">
-        <div class="gta-shield-placeholder-title">GTA 6 Content Hidden</div>
-        <div class="gta-shield-placeholder-sub">Blocked by GTA Shield to prevent PC spoilers</div>
-    `;
+    const icon = document.createElement('div');
+    icon.className = 'gta-shield-placeholder-icon';
+    icon.textContent = '🌴';
+
+    const body = document.createElement('div');
+    body.className = 'gta-shield-placeholder-body';
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'gta-shield-placeholder-title';
+    titleEl.textContent = 'GTA 6 Content Hidden';
+
+    const subEl = document.createElement('div');
+    subEl.className = 'gta-shield-placeholder-sub';
+    subEl.textContent = 'Blocked by GTA Shield to prevent PC spoilers';
+
+    body.appendChild(titleEl);
+    body.appendChild(subEl);
 
     if (settings.debugMode) {
-      html += `
-        <div class="gta-shield-placeholder-debug">
-          Reasons: ${decision.reasons.join('; ')} | Score: ${decision.score} | Level: ${decision.level}
-        </div>
-      `;
+      const debugEl = document.createElement('div');
+      debugEl.className = 'gta-shield-placeholder-debug';
+      debugEl.textContent = `Reasons: ${decision.reasons.join('; ')} | Score: ${decision.score} | Level: ${decision.level}`;
+      body.appendChild(debugEl);
     }
 
     if (settings.level === 'light') {
-      html += `
-        <button class="gta-shield-reveal-btn" type="button">Click to Reveal (Light Level)</button>
-      `;
+      const btn = document.createElement('button');
+      btn.className = 'gta-shield-reveal-btn';
+      btn.type = 'button';
+      btn.textContent = 'Click to Reveal (Light Level)';
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        revealCard(cardElement);
+      });
+      body.appendChild(btn);
     }
 
-    html += `</div>`;
-    placeholder.innerHTML = html;
-
-    if (settings.level === 'light') {
-      const btn = placeholder.querySelector('.gta-shield-reveal-btn');
-      if (btn) {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          revealCard(cardElement);
-        });
-      }
-    }
-
+    placeholder.appendChild(icon);
+    placeholder.appendChild(body);
     cardElement.appendChild(placeholder);
   }
 
@@ -204,12 +210,21 @@
     banner.className = 'gta-shield-pc-news';
     banner.setAttribute('role', 'status');
 
-    banner.innerHTML = `
-      <div class="gta-shield-pc-news-badge">🎮 GTA Shield • PC News Bypass</div>
-      <div class="gta-shield-pc-news-title">${decision.details.title || 'GTA 6 PC Announcement'}</div>
-      <div class="gta-shield-pc-news-note">Images and media stripped to prevent spoiler exposure</div>
-    `;
+    const badge = document.createElement('div');
+    badge.className = 'gta-shield-pc-news-badge';
+    badge.textContent = '🎮 GTA Shield • PC News Bypass';
 
+    const titleEl = document.createElement('div');
+    titleEl.className = 'gta-shield-pc-news-title';
+    titleEl.textContent = decision.details.title || 'GTA 6 PC Announcement';
+
+    const noteEl = document.createElement('div');
+    noteEl.className = 'gta-shield-pc-news-note';
+    noteEl.textContent = 'Images and media stripped to prevent spoiler exposure';
+
+    banner.appendChild(badge);
+    banner.appendChild(titleEl);
+    banner.appendChild(noteEl);
     cardElement.appendChild(banner);
   }
 
@@ -241,24 +256,41 @@
       if (document.body && !document.querySelector('.gta-shield-page-blocker')) {
         const blocker = document.createElement('div');
         blocker.className = 'gta-shield-page-blocker';
-        blocker.innerHTML = `
-          <div class="gta-shield-page-blocker-icon">🛡️</div>
-          <h1>Page Blocked by GTA Shield</h1>
-          <p>This entire page contains heavy GTA 6 topics or spoilers. It has been blocked to protect you before the PC launch.</p>
-          <div class="gta-shield-page-blocker-actions">
-            <button class="gta-shield-page-blocker-btn" id="gta-shield-go-back">Go Back</button>
-            <button class="gta-shield-page-blocker-btn secondary" id="gta-shield-proceed">Proceed Anyway</button>
-          </div>
-        `;
+
+        const bIcon = document.createElement('div');
+        bIcon.className = 'gta-shield-page-blocker-icon';
+        bIcon.textContent = '🌴';
+
+        const h1 = document.createElement('h1');
+        h1.textContent = 'Page Blocked by GTA Shield';
+
+        const p = document.createElement('p');
+        p.textContent = 'This entire page contains heavy GTA 6 topics or spoilers. It has been blocked to protect you before the PC launch.';
+
+        const actions = document.createElement('div');
+        actions.className = 'gta-shield-page-blocker-actions';
+
+        const backBtn = document.createElement('button');
+        backBtn.className = 'gta-shield-page-blocker-btn';
+        backBtn.id = 'gta-shield-go-back';
+        backBtn.textContent = 'Go Back';
+        backBtn.addEventListener('click', () => window.history.back());
+
+        const proceedBtn = document.createElement('button');
+        proceedBtn.className = 'gta-shield-page-blocker-btn secondary';
+        proceedBtn.id = 'gta-shield-proceed';
+        proceedBtn.textContent = 'Proceed Anyway';
+        proceedBtn.addEventListener('click', () => blocker.remove());
+
+        actions.appendChild(backBtn);
+        actions.appendChild(proceedBtn);
+
+        blocker.appendChild(bIcon);
+        blocker.appendChild(h1);
+        blocker.appendChild(p);
+        blocker.appendChild(actions);
 
         document.body.appendChild(blocker);
-
-        blocker.querySelector('#gta-shield-go-back').addEventListener('click', () => {
-          window.history.back();
-        });
-        blocker.querySelector('#gta-shield-proceed').addEventListener('click', () => {
-          blocker.remove();
-        });
       }
     }
   }
